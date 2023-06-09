@@ -43,7 +43,8 @@ const Phone = ({navigation}) => {
       phoneNumber === '+91987654321' ||
       phoneNumber === '+918848012237' ||
       phoneNumber === '+919567229939' ||
-      phoneNumber === '+919999900000'
+      phoneNumber === '+919999900000' ||
+      phoneNumber === '+919567450981'
     ) {
       setspinnerValue(false);
       navigation.navigate('OTP', {
@@ -329,7 +330,6 @@ const Phone = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Enter your Mobile Number</Text>
-
       <PhoneInput
         ref={phoneInput}
         defaultValue={phoneNumber}
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   },
   phoneContainer: {
     width: wp('90%'),
-    height: wp('18%'),
+    height: wp('20%'),
     color: 'black',
     alignItems: 'center',
     justifyContent: 'center',

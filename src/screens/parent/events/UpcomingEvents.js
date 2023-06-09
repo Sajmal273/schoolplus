@@ -19,7 +19,6 @@ const UpcomingEvents = () => {
   }, []);
 
   const getUpcmgevent = () => {
-    console.log('888888888');
     AsyncStorage.getItem('StdID')
       .then(keyValue => {
         AsyncStorage.getItem('acess_token').then(
@@ -50,7 +49,6 @@ const UpcomingEvents = () => {
                 const ccc = xmlDoc.getElementsByTagName(
                   'GetEventDetailsForParentResult',
                 )[0].childNodes[0].nodeValue;
-                console.log('dddd', ccc);
                 if (ccc === 'failure') {
                   setdataerror(true);
                   setloading(false);

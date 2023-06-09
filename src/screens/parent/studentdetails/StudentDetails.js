@@ -6,7 +6,7 @@ import PersonalDetails from './PersonalDetails';
 import ParentDetails from './ParentDetails';
 import Attendance from './Attendance';
 import Header from '../../../components/Header';
-
+//SCREEN
 const Tab = createMaterialTopTabNavigator();
 
 export default function App({route, navigation}) {

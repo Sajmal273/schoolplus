@@ -7,6 +7,10 @@ import {
   Text,
   View,
 } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DOMParser} from 'xmldom';
 import GLOBALS from '../../../config/Globals';
@@ -123,12 +127,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   line: {
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.4%'),
     borderRightColor: '#FFFFFF',
   },
   flatlistTitle: {
     flexDirection: 'row',
-    height: 40,
+    height: wp('13%'),
     backgroundColor: '#BA69C8',
     elevation: 3,
     // justifyContent: 'center',
@@ -136,13 +140,13 @@ const styles = StyleSheet.create({
   },
   titleText2: {
     color: '#FFFFFF',
-    marginLeft: 10,
-    marginTop: 10,
+    marginLeft: wp('3.5%'),
+    marginTop: wp('3.5%'),
   },
   titleText3: {
     color: '#FFFFFF',
-    marginLeft: 10,
-    marginTop: 10,
+    marginLeft: wp('3.5%'),
+    marginTop: wp('3.5%'),
   },
   textcontaintwo: {
     flex: 2,
@@ -153,26 +157,26 @@ const styles = StyleSheet.create({
   itemStyle: {
     flexDirection: 'row',
     flex: 1,
-    borderBottomWidth: 1,
+    borderBottomWidth: wp('0.5%'),
     borderBottomColor: '#D3D3D3',
   },
   itemone: {
     flex: 2,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: wp('3%'),
+    paddingBottom: wp('3%'),
     // alignItems: 'center',
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.3%'),
     borderColor: '#D3D3D3',
   },
   itemtwo: {
     flex: 1.25,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: wp('3%'),
+    paddingBottom: wp('3%'),
     // marginLeft: 10,
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.3%'),
     borderColor: '#D3D3D3',
   },
   item: {
-    marginLeft: 5,
+    marginLeft: wp('1.5%'),
   },
 });

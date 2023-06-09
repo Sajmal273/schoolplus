@@ -68,12 +68,12 @@ const SentNotes = () => {
                 const v = xmlDoc.getElementsByTagName(
                   'RetrieveTeacherSentNotesResult',
                 )[0].childNodes[0].nodeValue;
-                console.log(v);
+                // console.log(v);
                 if (v === 'failure') {
                   setdataerror(true);
                 } else {
                   const rslt = JSON.parse(v);
-                  console.log(rslt, 'rslt');
+                  // console.log(rslt, 'rslt');
                   const arraySet = [...rslt.Table];
                   arraySet.map(i => (i.attachments = []));
                   if (
@@ -127,7 +127,7 @@ const SentNotes = () => {
   );
 
   const downloadAttachment = (name, path) => {
-    console.log(name, 'path', path);
+    // console.log(name, 'path', path);
     const {dirs} = RNFetchBlob.fs;
     const imagePath = `${dirs.DownloadDir}${'/'}${moment(new Date()).format(
       'DDMMYYYYhhmm',
@@ -136,14 +136,14 @@ const SentNotes = () => {
       'DDMMYYYYhhmm',
     )}${name}`;
     const paths = encodeURI(path);
-    console.log(`${imagePreUrl}${paths}`, imagePath, imagePathIos);
+    // console.log(`${imagePreUrl}${paths}`, imagePath, imagePathIos);
     RNFetchBlob.config({
       path: Platform.OS === 'ios' ? imagePathIos : imagePath,
       fileCache: true,
     })
       .fetch('GET', `${imagePreUrl}${paths}`, {})
       .then(res => {
-        console.log(res, 'res');
+        // console.log(res, 'res');
         if (Platform.OS === 'android') {
           FileViewer.open(res.path(), {
             showOpenWithDialog: true,
@@ -210,11 +210,11 @@ export default SentNotes;
 
 const styles = StyleSheet.create({
   notDataText: {
-    fontSize: 15,
+    fontSize: wp('1.5%'),
   },
   renderPressable: {
-    paddingHorizontal: 5,
-    paddingBottom: 1,
+    paddingHorizontal: wp('1.5%'),
+    paddingBottom: wp('0.3%'),
     paddingTop: wp('2%'),
     width: wp('90%'),
     flexDirection: 'row',
@@ -232,9 +232,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   card: {
-    padding: 3,
-
-    margin: 10,
+    padding: wp('1%'),
+    margin: wp('3.5%'),
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -260,13 +259,13 @@ const styles = StyleSheet.create({
   },
   cardin: {
     flexDirection: 'row',
-    padding: 5,
+    padding: wp('1.5%'),
     flex: 1,
   },
   cardinrow: {
     flexDirection: 'row',
     flex: 1,
-    padding: 5,
+    padding: wp('1.5%'),
   },
   cardtitleView: {
     flexGrow: 0.85,
@@ -277,24 +276,24 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   cardintext: {
-    fontSize: 16,
+    fontSize: wp('5%'),
   },
   cardtitle: {
-    fontSize: 16,
+    fontSize: wp('5%'),
     fontWeight: 'bold',
     color: '#8A8A8A',
   },
   carddate: {
-    fontSize: 16,
+    fontSize: wp('5%'),
   },
   carddesc: {
-    fontSize: 14,
-    padding: 5,
+    fontSize: wp('4%'),
+    padding: wp('3%'),
     flexWrap: 'wrap',
   },
   text: {
-    marginLeft: 10,
-    fontSize: 15,
-    marginTop: 5,
+    marginLeft: wp('3.5%'),
+    fontSize: wp('5%'),
+    marginTop: wp('1.5%'),
   },
 });

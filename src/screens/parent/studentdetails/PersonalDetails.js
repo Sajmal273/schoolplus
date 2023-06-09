@@ -5,6 +5,10 @@ import {DOMParser} from 'xmldom';
 import GLOBALS from '../../../config/Globals';
 import Loader from '../../../components/ProgressIndicator';
 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const PersonalDetails = () => {
   let studentId = '';
   const [profilePic, setprofilePic] = useState('');
@@ -121,30 +125,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#E0E0E0',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    height: 125,
+    width: wp('100%'),
+    height: hp('23%'),
   },
   name: {
-    fontSize: 18,
+    fontSize: hp('3%'),
     fontWeight: 'bold',
   },
   textView: {
     flexDirection: 'row',
-    marginBottom: 10,
-    marginTop: 10,
+    marginBottom: hp('1.5%'),
+    marginTop: hp('1.5%'),
   },
   boldText: {
-    fontSize: 16,
+    fontSize: hp('3%'),
     fontWeight: 'bold',
     marginLeft: 20,
     flex: 1,
   },
   normalText: {
-    fontSize: 16,
+    fontSize: hp('3%'),
     flex: 2,
   },
   noData: {
-    fontSize: 16,
+    fontSize: hp('2.5%'),
     textAlign: 'center',
   },
 });

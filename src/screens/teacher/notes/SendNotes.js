@@ -11,6 +11,9 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
 } from 'react-native';
+import {PermissionsAndroid} from 'react-native';
+import {request, PERMISSIONS} from 'react-native-permissions';
+
 import {DOMParser} from 'xmldom';
 import Modal from 'react-native-modal';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -21,10 +24,12 @@ import DocumentPicker from 'react-native-document-picker';
 import {Dropdown} from 'react-native-material-dropdown-v2-fixed';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import GLOBALS from '../../../config/Globals';
 import Spinner from '../../../components/Spinner';
-
 const SendNotes = () => {
   const isFocused = useIsFocused();
   const [attachSet, setattachSet] = useState([]);
@@ -49,16 +54,16 @@ const SendNotes = () => {
       array.map(element => {
         element.status = true;
       });
-      console.log(array);
+      // console.log(array);
       setstudentIds(array);
     } else {
       array.map(element => {
         element.status = false;
       });
-      console.log(array);
+      // console.log('array');
       setstudentIds(array);
     }
-    console.log(array);
+    // console.log(array);
   }, [mainCheck]);
 
   const mainCheckFunction = () => {
@@ -73,7 +78,7 @@ const SendNotes = () => {
     } else {
       array[index].status = true;
     }
-    console.log(array);
+    // console.log(array);
     setstudentIds(array);
   };
 
@@ -159,8 +164,8 @@ const SendNotes = () => {
         });
     }
   };
-
-  const fromCamera = () => {
+  const Camera = () => {
+    console.log('camerA');
     ImagePicker.openCamera({
       width: 300,
       height: 500,
@@ -168,6 +173,7 @@ const SendNotes = () => {
       includeBase64: true,
       compressImageQuality: 0.6,
     }).then(image => {
+      console.log('imagepicker');
       const dataArray = [...attachSet];
       dataArray.push({
         filename: image.path.split('/').pop(),
@@ -176,6 +182,27 @@ const SendNotes = () => {
       });
       setattachSet(dataArray);
     });
+  };
+  const fromCamera = async () => {
+    console.log('fromcamera');
+    if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Example App Camera Permission',
+          message: 'Example App needs access to your camera',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('permission granted');
+
+        alert('yyy');
+        Camera();
+      } else {
+        console.log('permission denied');
+        alert('CAMERA Permission Denied');
+      }
+    }
   };
 
   const ClassAccess = () => {
@@ -280,7 +307,11 @@ const SendNotes = () => {
       {
         text: 'Camera',
         onPress: () => {
-          fromCamera();
+          {
+            fromCamera();
+            console.log('pressed');
+            alert('ok');
+          }
         },
       },
       {
@@ -438,6 +469,8 @@ const SendNotes = () => {
               uncheckedColor="white"
               containerStyle={{
                 borderColor: '#FFFFFF',
+                height: wp('14%'),
+                width: wp('11%'),
               }}
               checked={mainCheck}
             />
@@ -461,6 +494,10 @@ const SendNotes = () => {
                     <CheckBox
                       onPress={() => itemCheck(item, index)}
                       checked={studentIds[index].status}
+                      containerStyle={{
+                        height: wp('14%'),
+                        width: wp('11%'),
+                      }}
                     />
                   ) : null}
                 </View>
@@ -484,7 +521,7 @@ export default SendNotes;
 
 const styles = StyleSheet.create({
   containerColoum: {
-    margin: 20,
+    margin: wp('7%'),
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
@@ -493,7 +530,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#607D8B',
     paddingTop: wp('2%'),
-    width: '90%',
+    width: wp('95%'),
+    //doublecheck
     textAlign: 'left',
   },
   renderView: {
@@ -502,30 +540,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   Modaltext: {
-    marginBottom: 4,
+    marginBottom: wp('1%'),
   },
   ModalContainer: {
-    padding: 10,
-    height: 500,
+    padding: wp('3%'),
+    height: hp('90%'),
     backgroundColor: '#FFFFFF',
   },
   ModalButtonLeft: {
-    backgroundColor: '#607D8B',
+    backgroundColor: '#60798B',
     flex: 0.5,
-    height: 40,
+    height: wp('12.5%'),
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 3,
-    marginBottom: 10,
+    marginRight: wp('0.7%'),
+    marginBottom: wp('3.5%'),
   },
   MOdalButtonRight: {
     backgroundColor: '#607D8B',
     flex: 0.5,
-    height: 40,
+    height: wp('12.5%'),
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 3,
-    marginBottom: 10,
+    marginLeft: wp('0.7%'),
+    marginBottom: wp('3.5%'),
   },
   browseButton: {
     backgroundColor: '#607D8B',
@@ -540,24 +578,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    width: wp('72.3%'),
   },
   MOdalButtontext: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: wp('5%'),
     fontWeight: '200',
   },
   textFlewWrap: {
     flexWrap: 'wrap',
-    marginLeft: 20,
+    marginLeft: wp('7%'),
   },
 
   textinputtitleView: {
     alignSelf: 'stretch',
     alignContent: 'stretch',
-    height: 50,
-    marginBottom: 10,
-    borderWidth: 1,
+    height: wp('14%'),
+    marginBottom: wp('3.5%'),
+    borderWidth: wp('0.5%'),
     borderRadius: 3,
     flexDirection: 'row',
     color: 'black',
@@ -566,13 +604,13 @@ const styles = StyleSheet.create({
   TextInputContainer: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    height: 200,
+    height: wp('64%'),
     flexDirection: 'row',
     alignSelf: 'stretch',
     color: 'black',
-    borderWidth: 1,
+    borderWidth: wp('0.5%'),
     borderRadius: 3,
-    marginBottom: 10,
+    marginBottom: wp('3.5%'),
     borderColor: '#607D8B',
   },
   Buttoncontainer: {
@@ -584,7 +622,6 @@ const styles = StyleSheet.create({
   },
   card: {
     padding: 3,
-
     margin: 10,
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -618,42 +655,42 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         justifyContent: 'center',
-        paddingTop: 10,
-        borderWidth: 0.5,
+        paddingTop: wp('3.5%'),
+        borderWidth: wp('0.3%'),
         borderRadius: 3,
-        marginLeft: 10,
-        height: 35,
+        marginLeft: wp('3.5%'),
+        height: wp('10.5%'),
         // alignItems: 'stretch',
-        paddingLeft: 2,
+        paddingLeft: wp('0.8%'),
       },
       android: {
         justifyContent: 'center',
-        paddingTop: 10,
-        marginLeft: 10,
-        borderWidth: 0.5,
+        paddingTop: wp('3.5%'),
+        marginLeft: wp('3.5%'),
+        borderWidth: wp('0.3%'),
         borderRadius: 3,
-        height: 35,
+        height: wp('10.5%'),
         // alignItems: 'stretch',
-        paddingLeft: 2,
+        paddingLeft: wp('0.3%'),
       },
     }),
   },
   buttonSENTALL: {
     flex: 0.75,
-    height: 35,
-    marginLeft: 10,
-    marginRight: 10,
+    height: wp('11.5%'),
+    marginLeft: wp('3.5%'),
+    marginRight: wp('3.5%'),
     borderWidth: 0.5,
     borderRadius: 4,
     borderColor: '#13C0CE',
     // flex: 1,
-    padding: 10,
+    padding: wp('3%'),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#13C0CE',
     ...Platform.select({
       ios: {
-        height: 35,
+        height: wp('11.5%'),
       },
     }),
   },
@@ -669,14 +706,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    marginLeft: 10,
-    fontSize: 15,
-    marginTop: 5,
+    marginLeft: wp('3.5%'),
+    fontSize: wp('5%'),
+    marginTop: wp('1.5%'),
   },
   text_white: {
-    marginLeft: 10,
+    marginLeft: wp('3%'),
     color: '#F5F5F5',
-    fontSize: 15,
+    fontSize: wp('4.7%'),
   },
   P_SD_Bottom_Attendence: {
     flex: 7,
@@ -688,7 +725,7 @@ const styles = StyleSheet.create({
   P_SD_Bottom_AttendenceboxLeft: {
     elevation: 3,
     flex: 0.2,
-    height: 40,
+    height: wp('13%'),
     backgroundColor: '#AF67BD',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -698,12 +735,12 @@ const styles = StyleSheet.create({
   P_SD_Bottom_AttendenceboxRight: {
     elevation: 3,
     flex: 0.8,
-    height: 40,
+    height: wp('13%'),
     flexDirection: 'column',
     backgroundColor: '#AF67BD',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    borderLeftWidth: 0.5,
+    borderLeftWidth: wp('0.3%'),
     borderColor: '#EDE7EA',
   },
   P_SD_Bottom_Flatlist: {
@@ -713,20 +750,20 @@ const styles = StyleSheet.create({
   },
   P_SD_Bottom_FlatlistRowLeft: {
     flex: 0.2,
-    height: 40,
+    height: wp('13%'),
     alignItems: 'flex-start',
     justifyContent: 'center',
-    borderRightWidth: 0.5,
-    borderBottomWidth: 1,
+    borderRightWidth: wp('0.11%'),
+    borderBottomWidth: wp('0.5%'),
     borderColor: '#C5C5C5',
   },
   P_SD_Bottom_FlatlistRowRight: {
     flex: 0.8,
-    height: 40,
+    height: wp('13%'),
     alignItems: 'flex-start',
     justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderLeftWidth: 0.5,
+    borderBottomWidth: wp('0.5%'),
+    borderLeftWidth: wp('0.1%'),
     borderColor: '#C5C5C5',
   },
 });

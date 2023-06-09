@@ -15,8 +15,11 @@ import FileViewer from 'react-native-file-viewer';
 import {Dropdown} from 'react-native-material-dropdown-v2-fixed';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import GLOBALS from '../../../config/Globals';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const TeacherNotes = () => {
   const [data, setdata] = useState('');
@@ -143,6 +146,28 @@ const TeacherNotes = () => {
         })
           .then(response => response.text())
           .then(response => {
+            console.log(
+              `${GLOBALS.TEACHER_URL}TeachersSentNotesForAdminDashBoard`,
+              {
+                method: 'POST',
+                body: `<?xml version="1.0" encoding="utf-8"?>
+              <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+                <soap12:Body>
+                  <TeachersSentNotesForAdminDashBoard xmlns="http://www.m2hinfotech.com//">
+                    <branchId>${branchId}</branchId>
+                    <branchClassId>${dropdownValue1}</branchClassId>
+                    <startDate>${start}</startDate>
+                  <endDate>${end}</endDate>
+                  </TeachersSentNotesForAdminDashBoard>
+                </soap12:Body>
+              </soap12:Envelope>`,
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'text/xml; charset=utf-8',
+                },
+              },
+              'TeachersSentNotesForAdminDashBoard',
+            );
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(response);
             const v = xmlDoc.getElementsByTagName(
@@ -152,6 +177,8 @@ const TeacherNotes = () => {
               setdata('');
             } else {
               const rslt = JSON.parse(v);
+
+              console.log(rslt, 'enterr');
               const arraySet = [...rslt.Table];
               arraySet.map(i => (i.attachments = []));
               if (
@@ -334,7 +361,7 @@ const TeacherNotes = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{flex: 0.3}}>
+      <View style={{flex: 1}}>
         <View style={styles.horizontalView}>
           <View style={styles.verticalView}>
             <Text style={styles.textStyle1}>Class:</Text>
@@ -381,13 +408,16 @@ const TeacherNotes = () => {
               }}
             />
           </View>
+
           <View style={styles.verticalView}>
-            <Text style={styles.textStyle1} />
-            <View style={styles.button}>
-              <Pressable onPress={() => getNotes()}>
-                <Text style={styles.buttonText}>SUBMIT</Text>
-              </Pressable>
-            </View>
+            <Pressable
+              style={styles.button}
+              onPress={() => {
+                console.log('getnotesssssssssss');
+                getNotes();
+              }}>
+              <Text style={styles.buttonText}>SUBMIT</Text>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -506,16 +536,16 @@ const styles = StyleSheet.create({
   pickerStyle: {
     ...Platform.select({
       android: {
-        borderWidth: 0.5,
-        paddingLeft: 5,
-        paddingTop: 10,
+        borderWidth: wp('0.3%'),
+        paddingLeft: wp('0.3%'),
+        paddingTop: wp('4%'),
         borderColor: 'grey',
-        height: 35,
+        height: wp('11%'),
         justifyContent: 'center',
         borderRadius: 3,
-        marginLeft: 5,
-        marginRight: 5,
-        marginBottom: 5,
+        marginLeft: wp('01.5%'),
+        marginRight: wp('1.3%'),
+        marginBottom: wp('1.5%'),
       },
       ios: {
         borderWidth: 0.5,
@@ -571,6 +601,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
   },
+
   touchableView: {
     flexDirection: 'row',
   },
@@ -593,24 +624,29 @@ const styles = StyleSheet.create({
     }),
   },
   textStyle1: {
-    marginLeft: 5,
-    marginBottom: 5,
+    marginLeft: wp('1.3%'),
+    marginBottom: wp('1.3%'),
   },
   button: {
-    height: 36,
-    width: '96%',
-    marginRight: 10,
+    height: wp('11%'),
+    width: wp('48%'),
+    marginRight: wp('3.5%'),
+    marginTop: wp('7.5%'),
     justifyContent: 'center',
     alignSelf: 'center',
     alignItems: 'center',
     borderRadius: 3,
-    marginLeft: 5,
+    marginLeft: wp('02.5%'),
     backgroundColor: '#17BED0',
-    marginBottom: 5,
+    marginBottom: wp('3.5%'),
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    backgroundColor: '#17BED0',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    width: wp('48%'),
   },
   containertop: {
     elevation: 3,

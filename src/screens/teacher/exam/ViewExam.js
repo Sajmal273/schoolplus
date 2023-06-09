@@ -21,6 +21,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GLOBALS from '../../../config/Globals';
 import {Pressable} from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const ViewExam = () => {
   const [minmark, setminmark] = useState('');
@@ -47,7 +51,6 @@ const ViewExam = () => {
   const [isVisibleStart, setisVisibleStart] = useState(false);
   const [datepickerVisible, setdatepickerVisible] = useState(false);
   const parser = new DOMParser();
-
   useEffect(() => {
     AsyncStorage.getItem('acess_token').then(keyValue => {
       setaccessToken(keyValue);
@@ -87,12 +90,35 @@ const ViewExam = () => {
     })
       .then(response => response.text())
       .then(response => {
+        console.log(
+          `${GLOBALS.TEACHER_URL}GetSubjects`,
+          {
+            method: 'POST',
+            body: `<?xml version="1.0" encoding="utf-8"?>
+        <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+          <soap12:Body>
+            <GetSubjects xmlns="http://www.m2hinfotech.com//">
+              <BranchclsId>${value}</BranchclsId>
+              <PhoneNo>${accessToken}</PhoneNo>
+            </GetSubjects>
+          </soap12:Body>
+        </soap12:Envelope>
+        `,
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/soap+xml; charset=utf-8',
+            },
+          },
+          'getsubject......................',
+        );
         const modalgetsubject = parser
           .parseFromString(response)
           .getElementsByTagName('GetSubjectsResult')[0].childNodes[0].nodeValue;
         if (modalgetsubject === 'failure') {
+          console.log(modalgetsubject, 'iiiiiiiiii');
         } else {
           const modalgetsubjectdata = JSON.parse(modalgetsubject);
+          console.log(modalgetsubjectdata, 'modalgetsubjectdata');
           const dropData = modalgetsubjectdata.map(element => ({
             value: element.SubId,
             label: element.SubName,
@@ -209,6 +235,27 @@ const ViewExam = () => {
     })
       .then(response => response.text())
       .then(response => {
+        console.log(
+          `${GLOBALS.TEACHER_URL}GetExamDtls`,
+          {
+            method: 'POST',
+            body: `<?xml version="1.0" encoding="utf-8"?>
+                      <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+                      <soap12:Body>
+                      <GetExamDtls xmlns="http://www.m2hinfotech.com//">
+                      <PhoneNo>${accessToken}</PhoneNo>
+                      <BranchclsId>${dropdownValue}</BranchclsId>
+                      </GetExamDtls>
+                      </soap12:Body>
+                      </soap12:Envelope>
+                      `,
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/soap+xml; charset=utf-8',
+            },
+          },
+          ' submittttttttt',
+        );
         const result = parser
           .parseFromString(response)
           .getElementsByTagName('GetExamDtlsResult')[0].childNodes[0].nodeValue;
@@ -294,6 +341,7 @@ const ViewExam = () => {
   };
 
   const addNewExam = () => {
+    console.log('service');
     const examtype = 'Internal';
     const subtype = 'Compulsory';
     fetch(`${GLOBALS.TEACHER_URL}InsertTeachInternalExam`, {
@@ -325,11 +373,45 @@ const ViewExam = () => {
     })
       .then(response => response.text())
       .then(response => {
+        console.log(
+          `${GLOBALS.TEACHER_URL}InsertTeachInternalExam`,
+          {
+            method: 'POST',
+            body: `<?xml version="1.0" encoding="utf-8"?>
+    <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+    <soap12:Body>
+    <InsertTeachInternalExam xmlns="http://www.m2hinfotech.com//">
+    <ExamName>${examname}</ExamName>
+    <ExamType>${examtype}</ExamType>
+    <GradeId>${dropdownValue2}</GradeId>
+    <PhoneNo>${accessToken}</PhoneNo>
+    <BranchclsId>${dropdownValue1}</BranchclsId>
+    <SubType>${subtype}</SubType>
+    <SubId>${dropdownValue3}</SubId>
+    <Date>${chosenDate}</Date>
+    <starttime>${chosenStartTime}</starttime>
+    <endtime>${chosenEndTime}</endtime>
+    <maxmark>${maxmark}</maxmark>
+    <minmark>${minmark}</minmark>
+    </InsertTeachInternalExam>
+    </soap12:Body>
+    </soap12:Envelope>
+    `,
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'text/xml; charset=utf-8',
+            },
+          },
+          'InsertTeachInternalExam',
+        );
         const outpt = parser
           .parseFromString(response)
           .getElementsByTagName('InsertTeachInternalExamResult')[0]
           .childNodes[0].nodeValue;
+
         if (outpt === 'success') {
+          console.log('success__________________________');
+
           setisLoadingalert(false);
           Alert.alert('Success!', 'The exam has been created successfully!', [
             {
@@ -338,6 +420,7 @@ const ViewExam = () => {
             },
           ]);
         } else if (outpt === 'failure') {
+          console.log('failure__________________________');
           Alert.alert('Exam Created', 'Failure', [
             {
               text: 'OK',
@@ -346,10 +429,12 @@ const ViewExam = () => {
           ]);
         } else {
           Alert.alert('Error', 'Unexpected error occured! Try Again !');
+          console.log('Error__________________________');
         }
       })
       .catch(error => {
         console.log(error);
+        console.log('error');
       });
   };
 
@@ -397,10 +482,13 @@ const ViewExam = () => {
       <View style={styles.pickerButtonView}>
         <View style={styles.pickerView}>
           <Dropdown
-            inputContainerStyle={{borderBottomColor: 'transparent'}}
+            inputContainerStyle={{
+              borderBottomColor: 'transparent',
+            }}
             data={dropdownSource}
             style={styles.dropdownStyle}
             textColor="#121214"
+            width={wp('50%')}
             baseColor="transparent"
             value={dropdownValue}
             onChangeText={value => {
@@ -409,7 +497,10 @@ const ViewExam = () => {
           />
         </View>
         <View style={styles.button}>
-          <TouchableOpacity onPress={() => examviewlist()}>
+          <TouchableOpacity
+            onPress={() => {
+              examviewlist();
+            }}>
             <Text style={styles.dashtext}>SUBMIT</Text>
           </TouchableOpacity>
         </View>
@@ -465,11 +556,16 @@ const ViewExam = () => {
           )}
         </View>
 
-        <Pressable style={styles.buttonstyle} onPressIn={_showModal}>
+        <Pressable
+          style={styles.buttonstyle}
+          onPress={() => {
+            _showModal();
+          }}>
           <Icon
             name="plus"
             size={28}
             onPress={() => {
+              _showModal();
               setexamname('');
               console.log('ooo');
               setchosenEndTime('0.00');
@@ -581,6 +677,7 @@ const ViewExam = () => {
                       <Text style={styles.textcreat}>Class</Text>
                       <View style={styles.textInput1in3creatv}>
                         <Dropdown
+                          width={wp('29%')}
                           fontSize={14}
                           dropdownOffset={{top: 15}}
                           inputContainerStyle={{
@@ -588,8 +685,13 @@ const ViewExam = () => {
                           }}
                           baseColor="transparent"
                           data={dropdownSource1}
+                          position="absolute"
+                          bottom={wp('-4%')}
                           containerStyle={styles.pickerStyle}
                           textColor="#121214"
+                          // backgroundColor="red"
+
+                          height={hp('0%')}
                           selectedItemColor="#7A7A7A"
                           value={dropdownValue1}
                           onChangeText={value => {
@@ -612,6 +714,9 @@ const ViewExam = () => {
                           data={dropdownSource2}
                           containerStyle={styles.pickerStyle}
                           textColor="#121214"
+                          width={wp('29%')}
+                          position="absolute"
+                          bottom={wp('-4%')}
                           selectedItemColor="#7A7A7A"
                           value={dropdownValue2}
                           onChangeText={value => {
@@ -630,9 +735,16 @@ const ViewExam = () => {
                           inputContainerStyle={{
                             borderBottomColor: 'transparent',
                           }}
+                          width={wp('29%')}
+                          height={wp('17%')}
+                          position="absolute"
+                          bottom={wp('-4%')}
                           data={dropdownSource3}
+                          textAlign="center"
                           containerStyle={styles.pickerStyle}
                           textColor="#121214"
+                          // backgroundColor="green"
+                          textAlignVertical="bottom"
                           selectedItemColor="#7A7A7A"
                           value={dropdownValue3}
                           onChangeText={value => {
@@ -674,7 +786,10 @@ const ViewExam = () => {
                     </View>
                   </View>
                   <TouchableOpacity
-                    onPress={btAddExam}
+                    onPress={() => {
+                      btAddExam();
+                      console.log('sherin');
+                    }}
                     style={styles.ButtonAddExamcreat}>
                     <Text style={styles.textWhitecreat}>ADD EXAM</Text>
                   </TouchableOpacity>
@@ -707,8 +822,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    marginHorizontal: 5,
-    marginVertical: 2,
+    marginHorizontal: wp('1.5%'),
+    marginVertical: wp('1%'),
   },
   pickerView: {
     flex: 1,
@@ -727,11 +842,13 @@ const styles = StyleSheet.create({
         paddingLeft: 2,
       },
       android: {
-        flexGrow: 1,
+        flex: 1,
+        width: wp('26%'),
         justifyContent: 'center',
         alignItems: 'stretch',
-        paddingBottom: 20,
-        paddingLeft: 2,
+        paddingBottom: 0,
+        // backgroundColor: 'blue',
+        paddingLeft: 0,
       },
     }),
   },
@@ -739,7 +856,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     elevation: 3,
     backgroundColor: '#17BED0',
-    height: 35,
+    height: wp('10.5%'),
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -748,12 +865,12 @@ const styles = StyleSheet.create({
     borderColor: '#CFCFCF',
     backgroundColor: '#fff',
     borderRadius: 1,
-    marginRight: 10,
-    borderWidth: 1,
-    height: 38,
+    marginRight: wp('3.5%'),
+    borderWidth: wp('0.5%'),
+    height: wp('11.5%'),
   },
   dashtext: {
-    fontSize: 14,
+    fontSize: wp('4.5%'),
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
@@ -860,7 +977,10 @@ const styles = StyleSheet.create({
   topcontentimagelogo: {
     height: 30,
     width: 30,
+    justifyContent: 'center',
     resizeMode: 'contain',
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   container: {
     flexDirection: 'column',
@@ -871,9 +991,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   texticoncreat: {
-    marginLeft: -10,
+    marginLeft: wp('3%'),
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: wp('7%'),
     fontWeight: '200',
   },
   containerImageTextcreat: {
@@ -884,28 +1004,28 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   containerTabcreat: {
-    marginHorizontal: 15,
+    marginHorizontal: wp('4%'),
     flex: 7,
     flexDirection: 'column',
   },
   ViewInColcreat: {
     flex: 1,
-    marginVertical: 10,
+    marginVertical: wp('3.5%'),
     flexDirection: 'column',
   },
   textcreat: {
     alignItems: 'flex-start',
-    fontSize: 17,
+    fontSize: wp('5%'),
     fontWeight: 'normal',
     color: 'gray',
   },
   textInputcreat: {
-    height: 40,
-    borderWidth: 0.5,
+    height: wp('11%'),
+    borderWidth: wp('0.3%'),
     borderRadius: 5,
   },
   ViewInRowcreat: {
-    marginVertical: 10,
+    marginVertical: wp('3%'),
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -914,19 +1034,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   textInput1in3creat: {
-    height: 40,
+    height: wp('11%'),
     textAlignVertical: 'center',
     textAlign: 'center',
     justifyContent: 'center',
-    borderWidth: 0.5,
+    borderWidth: wp('0.3%'),
     borderRadius: 5,
   },
   textInput1in3creatv: {
     ...Platform.select({
       ios: {},
       android: {
-        height: 40,
-        borderWidth: 0.5,
+        flex: 1,
+        height: wp('14%'),
+        width: 80,
+        // backgroundColor: 'blue',
+        borderWidth: wp('0.3%'),
         borderRadius: 5,
       },
     }),
@@ -936,9 +1059,9 @@ const styles = StyleSheet.create({
     flex: 0.48,
   },
   textInput1in2creat: {
-    height: 40,
+    height: wp('11%'),
     textAlign: 'center',
-    borderWidth: 0.5,
+    borderWidth: wp('0.3%'),
     borderRadius: 5,
   },
   ButtonAddExamcreat: {
@@ -946,7 +1069,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#034951',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 35,
+    height: wp('10%'),
     margin: 20,
     elevation: 3,
   },

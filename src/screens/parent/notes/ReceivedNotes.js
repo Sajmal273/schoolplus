@@ -60,6 +60,26 @@ const ReceivedNotes = () => {
             })
               .then(response => response.text())
               .then(response => {
+                console.log(
+                  `${GLOBALS.PARENT_URL}RetrieveParentNoteHistory`,
+                  {
+                    method: 'POST',
+                    body: `<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+     <soap12:Body>
+     <RetrieveParentNoteHistory xmlns="http://www.m2hinfotech.com//">
+     <parentNo>${parentNo}</parentNo>
+     <studentId>${StudentID}</studentId>
+     </RetrieveParentNoteHistory>
+     </soap12:Body>
+     </soap12:Envelope>
+     `,
+                    headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'text/xml; charset=utf-8',
+                    },
+                  },
+                  'lllllllllll',
+                );
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(response);
                 const v = xmlDoc.getElementsByTagName(
@@ -217,13 +237,13 @@ export default ReceivedNotes;
 
 const styles = StyleSheet.create({
   notDataText: {
-    fontSize: 15,
+    fontSize: wp('5%'),
     textAlign: 'center',
   },
   progressBar: {
     flex: 1,
-    height: 80,
-    width: 80,
+    height: wp('22.5%'),
+    width: wp('22.5%'),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -232,7 +252,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   noDataView: {
-    marginTop: 80,
+    marginTop: wp('22.5%'),
     alignItems: 'center',
   },
   container: {
@@ -240,7 +260,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   renderPressable: {
-    paddingHorizontal: 5,
+    paddingHorizontal: wp('1.5%'),
     paddingBottom: 1,
     width: wp('90%'),
     paddingTop: wp('2%'),
@@ -255,9 +275,9 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   card: {
-    padding: 3,
+    padding: wp('4.5%'),
 
-    margin: 10,
+    margin: wp('3.5%'),
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -283,13 +303,13 @@ const styles = StyleSheet.create({
   },
   cardin: {
     flexDirection: 'row',
-    padding: 5,
+    padding: wp('1.5%'),
     flex: 1,
   },
   cardinrow: {
     flexDirection: 'row',
     flex: 1,
-    padding: 5,
+    padding: wp('1.5%'),
   },
   cardtitleView: {
     flexGrow: 0.85,
@@ -300,16 +320,16 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   cardtitle: {
-    fontSize: 16,
+    fontSize: wp('5%'),
     fontWeight: 'bold',
     color: '#8A8A8A',
   },
   carddate: {
-    fontSize: 16,
+    fontSize: wp('5%'),
   },
   carddesc: {
-    fontSize: 14,
-    padding: 5,
+    fontSize: wp('5%'),
+    padding: wp('1.5%'),
     flexWrap: 'wrap',
   },
   renderText: {
@@ -320,8 +340,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   text: {
-    marginLeft: 10,
-    fontSize: 15,
-    marginTop: 5,
+    marginLeft: wp('3.5%'),
+    fontSize: wp('5%'),
+    marginTop: wp('1.5%'),
   },
 });

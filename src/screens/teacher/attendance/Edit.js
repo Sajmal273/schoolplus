@@ -20,6 +20,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import GLOBALS from '../../../config/Globals';
 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const Edit = () => {
   const [unchecked, setunchecked] = useState([]);
   const [dropdownSource, setdropdownSource] = useState([]);
@@ -221,6 +225,7 @@ const Edit = () => {
   };
   const onData = arr => {
     const arr2 = JSON.stringify(arr);
+    console.log(arr2, 'arr2arr2');
     const arr3 = JSON.parse(arr2);
     let attendancestatus;
     if (arr3.length > 0) {
@@ -259,13 +264,16 @@ const Edit = () => {
               .parseFromString(response)
               .getElementsByTagName('StdAttUpdateResult')[0]
               .childNodes[0].nodeValue;
+            console.log('edtd777');
             if (result === 'failure') {
+              console.log('edtdmbb');
               setisLoadingalert(false);
               Alert.alert(
                 'Attendance',
                 'Attendance registration has been failed !..',
               );
             } else {
+              console.log('edtd');
               setisLoadingalert(false);
               Alert.alert(
                 'Attendance',
@@ -274,11 +282,11 @@ const Edit = () => {
             }
           })
           .catch(error => {
-            console.log(error);
+            console.log(error, 'edreadr');
           });
       },
       error => {
-        console.log(error);
+        console.log(error, 'fgxfg');
       },
     );
   };
@@ -345,7 +353,12 @@ const Edit = () => {
                 containerStyle={styles.pickerStyle}
                 data={dropdownSource1}
                 value={dropdownValue1}
+                color="black"
                 baseColor="transparent"
+                position="absolute"
+                top={10}
+                marginLeft={15}
+                width={120}
                 underlineColor="transparent"
                 dropdownOffset={{top: 15}}
                 onChangeText={value => {
@@ -444,20 +457,20 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
   },
   noDataView: {
-    marginTop: 80,
+    marginTop: wp('26%'),
     alignItems: 'center',
   },
   notDataText: {
-    fontSize: 15,
+    fontSize: wp('11.5%'),
   },
   inputContainer: {borderBottomColor: 'transparent'},
   line: {
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.3%'),
     borderRightColor: '#FFFFFF',
   },
   flatlistTitle: {
     flexDirection: 'row',
-    height: 40,
+    height: wp('12%'),
     backgroundColor: '#BA69C8',
     elevation: 3,
   },
@@ -466,11 +479,11 @@ const styles = StyleSheet.create({
   },
   titleText2: {
     color: '#FFFFFF',
-    marginLeft: 10,
+    marginLeft: wp('3.5%'),
   },
   titleText3: {
     color: '#FFFFFF',
-    marginLeft: 10,
+    marginLeft: wp('3.5%'),
   },
   textcontainone: {
     flex: 1,
@@ -510,7 +523,7 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: wp('0.4%'),
     borderBottomColor: '#E0E0E0',
   },
   flatlistStyle: {
@@ -519,7 +532,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   item2: {
-    marginLeft: 10,
+    marginLeft: wp('3.5%'),
   },
   horizontalView: {
     flexDirection: 'row',
@@ -529,49 +542,49 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pickerStyle: {
-    marginLeft: 5,
-    marginRight: 5,
-    marginBottom: 5,
+    marginLeft: wp('2%'),
+    marginRight: wp('1.5%'),
+    marginBottom: wp('1%'),
     borderRadius: 3,
-    borderWidth: 0.5,
+    borderWidth: wp('0.2%'),
     borderColor: 'grey',
     justifyContent: 'center',
-    height: Platform.OS === 'ios' ? 30 : 35,
+    height: Platform.OS === 'ios' ? wp('8.5%') : wp('10%'),
   },
   textStyle1: {
-    marginLeft: 5,
-    marginBottom: 5,
+    marginLeft: wp('2%'),
+    marginBottom: wp('2%'),
   },
   button: {
-    height: 35,
+    height: wp('11%'),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 3,
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: wp('1.5%'),
+    marginRight: wp('1.5%'),
     backgroundColor: '#17BED0',
-    marginBottom: 5,
+    marginBottom: wp('1.5%'),
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
   },
   hideText: {
-    marginLeft: 5,
-    marginBottom: 5,
+    marginLeft: wp('1.5%'),
+    marginBottom: wp('1.5%'),
     color: 'white',
   },
   datePicker: {
-    height: 35,
+    height: wp('32%'),
     justifyContent: 'center',
     borderRadius: 3,
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: wp('1.5%'),
+    marginRight: wp('1.5%'),
   },
   buttonstyle: {
     position: 'absolute',
-    height: 50,
-    width: 50,
+    height: wp('15.5%'),
+    width: wp('15.5%'),
     borderRadius: 50,
     shadowColor: '#000000',
     shadowOffset: {width: 0, height: 2},
@@ -581,12 +594,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'flex-end',
-    right: 30,
-    bottom: 20,
+    right: wp('9%'),
+    bottom: wp('7%'),
   },
   topcontentimagelogo: {
-    height: 30,
-    width: 30,
+    height: wp('9%'),
+    width: wp('9%'),
   },
 });
 export default Edit;

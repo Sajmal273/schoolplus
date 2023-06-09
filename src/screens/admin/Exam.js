@@ -8,6 +8,10 @@ import {
   View,
   Pressable,
 } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Dropdown} from 'react-native-material-dropdown-v2-fixed';

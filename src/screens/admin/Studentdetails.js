@@ -6,6 +6,10 @@ import {DOMParser} from 'xmldom';
 import GLOBALS from '../../config/Globals';
 import Header from '../../components/Header';
 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const Studentdetails = ({navigation}) => {
   const [data, setdata] = useState('');
   const [dataerror, setdataerror] = useState(false);
@@ -275,8 +279,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   notDataText: {
-    fontSize: 15,
-    marginTop: 10,
+    fontSize: wp('4.5%'),
+    marginTop: wp('7.5%'),
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
@@ -305,16 +309,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#B866C6',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.5%'),
     borderColor: '#FFFFFF',
   },
   textcontaintwo: {
     flex: 2,
     backgroundColor: '#B866C6',
-    paddingLeft: 10,
+    paddingLeft: wp('3.5%'),
     justifyContent: 'center',
     borderColor: '#FFFFFF',
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.5%'),
   },
   flatlistView: {
     flex: 6,
@@ -322,7 +326,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   textc: {
-    fontSize: 14,
+    fontSize: wp('4.5%'),
     color: '#FFFFFF',
   },
   itemStyle: {
@@ -332,41 +336,41 @@ const styles = StyleSheet.create({
     borderBottomColor: '#D3D3D3',
   },
   item: {
-    fontSize: 14,
+    fontSize: wp('5%'),
     flex: 1,
   },
   itemone: {
     flex: 0.8,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: wp('3.5%'),
+    paddingBottom: wp('3.5%'),
     alignItems: 'center',
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.5%'),
     borderColor: '#D3D3D3',
   },
   itemtwo: {
     flex: 2,
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginLeft: 10,
-    borderRightWidth: 1,
+    paddingTop: wp('3.5%'),
+    paddingBottom: wp('3.5%'),
+    marginLeft: wp('3.5%'),
+    borderRightWidth: wp('0.5%'),
     borderColor: '#D3D3D3',
   },
   classSelection: {
     flexDirection: 'row',
     //  height: 75,
     flex: 0.1,
-    width: '100%',
+    width: wp('100%'),
   },
   pickerStyle: {
-    height: 35,
+    height: wp('9.5%'),
     flex: 0.5,
-    paddingTop: 10,
-    paddingLeft: 5,
-    width: '100%',
+    paddingTop: wp('3.5%'),
+    paddingLeft: wp('0.5%'),
+    width: wp('50%'),
     justifyContent: 'center',
     alignItems: 'stretch',
-    margin: 5,
-    borderWidth: 0.5,
+    margin: wp('1.5%'),
+    borderWidth: wp('0.3%'),
     borderColor: 'black',
     borderRadius: 3,
   },

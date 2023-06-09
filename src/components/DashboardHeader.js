@@ -284,7 +284,7 @@ const Header = props => {
           role === 'APP') &&
           activeDashboard === 'PH' && (
             <Pressable onPressIn={props.studSwitch} style={styles.bell}>
-              <Icon name="face" size={30} color="white" />
+              <Icon name="face-man" size={30} color="white" />
             </Pressable>
           )}
         {(role === 'AA' || role === 'AA,P') && activeDashboard === 'AH' && (
@@ -331,40 +331,45 @@ const styles = StyleSheet.create({
   start: {
     flex: 1,
     flexDirection: 'row',
+    position: 'absolute',
   },
   menu: {
-    marginLeft: 10,
+    marginLeft: wp('3.5%'),
   },
   end: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     flex: 1,
+    position: 'absolute',
+    right: wp('0%'),
   },
   home: {
     // alignSelf: 'flex-end',
-    marginRight: 10,
+    marginRight: wp('0.5%'),
   },
   bell: {
     // alignSelf: 'flex-end',
-    marginRight: 10,
+    marginRight: wp('1%'),
   },
   text: {
-    marginLeft: 20,
+    marginLeft: wp('7%'),
     color: 'white',
-    fontSize: 22,
+    fontSize: wp('7%'),
+    position: 'absolute',
+    left: wp('7%'),
   },
   container: {
     flex: 1,
   },
   iconbadgetext: {
-    fontSize: 10,
+    fontSize: wp('3.5%'),
     color: '#FFFFFF',
   },
   iconBadge: {
     elevation: 2,
-    width: 16,
-    height: 16,
-    marginTop: -40,
+    width: wp('5.5%'),
+    height: wp('5.5%'),
+    marginTop: wp('-11.5%'),
     // marginLeft:20,
     backgroundColor: '#EA1E63',
   },

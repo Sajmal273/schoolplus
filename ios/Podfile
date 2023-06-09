@@ -19,6 +19,8 @@ target 'schoolplus' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
   target 'schoolplusTests' do
     inherit! :complete
     # Pods for testing

@@ -131,7 +131,7 @@ const SwitchstudentPage = ({route, navigation}) => {
           source={require('../images/face.png')}
         /> */}
         <Icon
-          name="face"
+          name="face-man"
           size={34}
           color="white"
           style={styles.containertopcontentimage}

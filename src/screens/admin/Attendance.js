@@ -8,6 +8,10 @@ import {
   View,
   Pressable,
 } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import {CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-material-dropdown-v2-fixed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -184,6 +188,28 @@ const Attendance = ({navigation}) => {
         .then(response => response.text())
         .then(response => {
           setloading(false);
+          console.log(
+            `${GLOBALS.TEACHER_URL}ViewDailyAttList`,
+            {
+              method: 'POST',
+              body: `<?xml version="1.0" encoding="utf-8"?>
+    <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+      <soap12:Body>
+        <ViewDailyAttList xmlns="http://www.m2hinfotech.com//">
+          <BranchclsId>${dropdownValue2}</BranchclsId>
+          <DayStatus>${timestatus}</DayStatus>
+          <Date>${dateText}</Date>
+        </ViewDailyAttList>
+      </soap12:Body>
+    </soap12:Envelope>
+      `,
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/soap+xml; charset=utf-8',
+              },
+            },
+            'ViewDailyAttListViewDailyAttListViewDailyAttList',
+          );
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(response);
 
@@ -196,6 +222,7 @@ const Attendance = ({navigation}) => {
             const rsltcheck = JSON.parse(v);
             console.log('rsltcheck', rsltcheck);
             setdataSourceEditcheck(rsltcheck);
+            console.log('datadatadata');
             setdatacheck(rsltcheck.filter(x => x.Status === 'A'));
             getUnchecked(rsltcheck);
             setdataerror(false);
@@ -295,9 +322,11 @@ const Attendance = ({navigation}) => {
         </View>
         <View style={styles.horizontalView}>
           <View style={styles.verticalView}>
-            <Text style={styles.hideText}>Submit</Text>
             <View style={styles.button}>
-              <Pressable onPress={() => onCheckboxData()}>
+              <Pressable
+                onPress={() => {
+                  onCheckboxData();
+                }}>
                 <Text style={styles.buttonText}>SUBMIT</Text>
               </Pressable>
             </View>
@@ -359,23 +388,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   noDataView: {
-    marginTop: 80,
+    marginTop: wp('22%'),
     alignItems: 'center',
   },
   notDataText: {
-    fontSize: 15,
-    marginTop: 10,
+    fontSize: wp('5%'),
+    marginTop: wp('3.5%'),
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },
   line: {
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.5%'),
     borderRightColor: '#FFFFFF',
   },
   flatlistTitle: {
     flexDirection: 'row',
-    height: 40,
+    height: wp('12%'),
     backgroundColor: '#BA69C8',
     elevation: 3,
   },
@@ -384,11 +413,11 @@ const styles = StyleSheet.create({
   },
   titleText2: {
     color: '#FFFFFF',
-    marginLeft: 10,
+    marginLeft: wp('3.5%'),
   },
   titleText3: {
     color: '#FFFFFF',
-    marginLeft: 10,
+    marginLeft: wp('3.5%'),
   },
   textcontainone: {
     flex: 1,
@@ -408,14 +437,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textcontentone: {
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.5%'),
     borderRightColor: '#E0E0E0',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   textcontenttwo: {
-    borderRightWidth: 1,
+    borderRightWidth: wp('0.5%'),
     borderRightColor: '#E0E0E0',
     flex: 1,
     alignItems: 'center',
@@ -429,7 +458,7 @@ const styles = StyleSheet.create({
 
   itemStyle: {
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: wp('0.3%'),
     borderBottomColor: '#E0E0E0',
   },
 
@@ -460,7 +489,7 @@ const styles = StyleSheet.create({
   },
   item1: {},
   item2: {
-    marginLeft: 10,
+    marginLeft: wp('3.5%'),
   },
   horizontalView: {
     flexDirection: 'row',
@@ -493,63 +522,64 @@ const styles = StyleSheet.create({
   pickerStyle: {
     ...Platform.select({
       android: {
-        paddingTop: 10,
-        borderWidth: 0.5,
+        paddingTop: wp('3.5%'),
+        borderWidth: wp('0.3%'),
         borderColor: 'grey',
-        height: 35,
+        height: wp('10%'),
         justifyContent: 'center',
         borderRadius: 3,
-        marginLeft: 5,
-        paddingLeft: 5,
-        marginRight: 5,
-        marginBottom: 5,
+        marginLeft: wp('0.6%'),
+        paddingLeft: wp('1.5%'),
+        marginRight: wp('1.5%'),
+        marginBottom: wp('1.5%'),
       },
       ios: {
-        paddingTop: 10,
-        borderWidth: 0.5,
+        paddingTop: wp('3.5%'),
+        borderWidth: wp('0.3%'),
         borderColor: 'grey',
-        height: 30,
+        height: wp('9%'),
         justifyContent: 'center',
         borderRadius: 3,
-        marginLeft: 5,
-        paddingLeft: 5,
-        marginRight: 5,
-        marginBottom: 5,
+        marginLeft: wp('1.5%'),
+        paddingLeft: wp('1.5%'),
+        marginRight: wp('1.5%'),
+        marginBottom: wp('1.5%'),
       },
     }),
   },
   textStyle1: {
-    marginLeft: 5,
-    marginBottom: 5,
+    marginLeft: wp('1.5%'),
+    marginBottom: wp('1.5%'),
   },
   button: {
-    height: 35,
+    height: wp('9.5%'),
     width: '50%',
-    marginTop: -20,
+    marginTop: wp('2.5%'),
     justifyContent: 'center',
     alignSelf: 'center',
     alignItems: 'center',
     borderRadius: 3,
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: wp('1.5%'),
+    marginRight: wp('1.5%'),
     backgroundColor: '#17BED0',
-    marginBottom: 5,
+    marginBottom: wp('1.5%'),
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
   },
   hideText: {
-    marginLeft: 5,
-    marginBottom: 5,
+    marginLeft: wp('1.5%'),
+    marginBottom: wp('1.5%'),
     color: 'white',
+    backgroundColor: 'red',
   },
   datePicker: {
-    height: 35,
+    height: wp('6.5%'),
     justifyContent: 'center',
-    borderRadius: 3,
-    marginLeft: 5,
-    marginRight: 5,
+    borderRadius: wp('1.5%'),
+    marginLeft: wp('1.5%'),
+    marginRight: wp('1.5%'),
   },
   buttonstyle: {
     position: 'absolute',

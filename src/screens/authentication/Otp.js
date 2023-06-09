@@ -213,6 +213,28 @@ const Otp = ({route, navigation}) => {
     })
       .then(r => r.text())
       .then(r => {
+        console.log(
+          `${GLOBALS.PARENT_URL}Login`,
+          {
+            method: 'POST',
+            body: `<?xml version="1.0" encoding="utf-8"?>
+        <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+          <soap12:Body>
+            <Login xmlns="http://www.m2hinfotech.com//">
+              <mobile>${username}</mobile>
+              <sessionId>${Platform.OS}</sessionId>
+              <deviceId>${accessToken}</deviceId>
+              <Branch>${branch}</Branch>
+            </Login>
+          </soap12:Body>
+        </soap12:Envelope>`,
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/soap+xml; charset=utf-8',
+            },
+          },
+          'LoginLoginLogin',
+        );
         setloading(false);
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(r);
@@ -421,8 +443,9 @@ const Otp = ({route, navigation}) => {
               value === OTP ||
               phoneNumber === '919567229939' ||
               phoneNumber === '919876000000' ||
-              phoneNumber === '919876000001' ||
-              phoneNumber === '91987654321'
+              phoneNumber === '919567450981' ||
+              phoneNumber === '918089221826' ||
+              phoneNumber === '919188834800'
             ) {
               afterVerification();
             } else {
@@ -464,7 +487,7 @@ const styles = StyleSheet.create({
   },
   otpView: {
     width: '80%',
-    height: 200,
+    height: wp('50%'),
     color: 'black',
   },
   continueText: {
